@@ -4,7 +4,7 @@
 
 Round::Round() {
     starting_sequence();
-    play();
+    preplay();
 }
 
 void Round::starting_sequence() {
@@ -34,16 +34,35 @@ void Round::starting_sequence() {
     deck.cards.push_back(ai_card);
     deck.cards.push_back(player_card);
     deck.shuffle();
+
+}
+
+void Round::preplay() {
+    stage = "preplay";
+
+    // Deal to each player
+    deal();
+
+    // Display hand to user
+    player1.display_hand();
+
+    // Ask user to discard into crib
+    Card crib[4];
+    Card* p1_discard = player1.discard_phase();
+
+    // Remove two random cards from AI
+    Card* p2_discard = player1.random_discard();
+
+    for (int i = 0; i < 4; i+=2) {
+        crib[i] = p1_discard[i];
+        crib[i+1] = p2_discard[i];
+    }
 }
 
 void Round::play() {
     stage = "play";
 
-    // Deal to each player
-    deal();
 
-    // Display hand to user...
-    player1.display_hand();
 
 
 }
@@ -55,17 +74,20 @@ void Round::deal() {
     Player* dealer;
 
     if (player1.getrole() == "Pone") {
+        std::cout << "You are pone!" << std::endl;
         pone = &player1;
         dealer = &player2;
     } else {
+        std::cout << "You are dealer!" << std::endl;
         pone = &player2;
         dealer = &player1;
     }
 
-
-    for (int i = 0; i < hand_size * 2; i+=2) {
-        pone->hand.push_back(deck.cards[i]);
-        dealer->hand.push_back(deck.cards[i+1]);
+    for (int i = 0; i < hand_size; i++) {
+        pone->hand.push_back(deck.cards[0]);
+        deck.cards.erase(deck.cards.begin());
+        dealer->hand.push_back(deck.cards[0]);
+        deck.cards.erase(deck.cards.begin());
     }
 
 }

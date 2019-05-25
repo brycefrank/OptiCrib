@@ -14,6 +14,8 @@ public:
     std::vector<Card> hand;
 
     void display_hand();
+    Card* discard_phase();
+    Card* random_discard();
 
 private:
     std::string role;

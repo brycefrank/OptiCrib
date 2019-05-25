@@ -13,6 +13,7 @@ private:
 
     void starting_sequence();
     void deal();
+    void preplay(); // The stage where users discard to crib
     void play(); // The play stage
     void show(); // The show stage
 
@@ -20,6 +21,7 @@ private:
 public:
     Round();
     std::string getstage();
+
 };
 
 #endif //OPTICRIB_ROUND_H

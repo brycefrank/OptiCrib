@@ -9,6 +9,7 @@ public:
     Deck();
     Card drawcard(int i);
     void shuffle();
+    void display();
 };
 
 #endif //OPTICRIB_DECK_H
