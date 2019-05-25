@@ -1,10 +1,14 @@
-#include "Deck.h"
-#include "Card.h"
+#include "deck.h"
+#include "card.h"
 #include <iterator>
 #include <algorithm>
 #include <string>
+#include <iostream>
+#include <vector>
 
 Deck::Deck() {
+    cards.reserve(52);
+
     int i = 0;
     for (int v = 1; v <= 13; v++) {
         for (int s = 1; s <= 4; s++) {
@@ -28,21 +32,26 @@ Deck::Deck() {
             };
 
             Card card(v, b);
-            cards[i] = card;
+            cards.push_back(card);
             i += 1;
         }
     }
 }
 
-Card Deck::getcard(int i) {
-    return cards[i];
+Card Deck::drawcard(int i) {
+    Card card = cards[i];
+    cards.erase(cards.begin() + i);
+
+    return card;
 }
 
-int * Deck::shuffle() {
-    static int order[52];
+void Deck::shuffle() {
+    int order[52];
     std::fill_n(order, 52, -1);
     srand (time(NULL));
 
+    //Card shuffled[52]; // temp array of cards
+    // Now, construct the shuffled order
     int i = 0;
     while (i < 52) {
         int rand_num = rand() % 52;
@@ -55,5 +64,9 @@ int * Deck::shuffle() {
         }
     }
 
-    return order;
+    // Use the order to re-arrange the cards array
+    for (int i = 0; i < 52; i++) {
+        cards[i] = cards[order[i]];
+    }
+
 }

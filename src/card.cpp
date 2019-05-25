@@ -1,5 +1,6 @@
-#include "Card.h"
+#include "card.h"
 #include <string>
+#include <iostream>
 
 Card::Card(){}
 
@@ -14,4 +15,10 @@ int Card::getvalue() {
 
 std::string Card::getsuit() {
     return suit;
+}
+
+
+void Card::display() {
+    std::string value_str = std::to_string(getvalue());
+    std::cout << getsuit() << "--" << value_str << std::endl;
 }

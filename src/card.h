@@ -11,6 +11,7 @@ public:
     Card(int v, std::string s);
     int getvalue();
     std::string getsuit();
+    void display();
 };
 
 #endif //OPTICRIB_CARD_H
