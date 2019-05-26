@@ -8,8 +8,6 @@
 #include <vector>
 
 Deck::Deck() {
-    cards.reserve(52);
-
     int i = 0;
     for (int v = 1; v <= 13; v++) {
         for (int s = 1; s <= 4; s++) {
@@ -33,53 +31,14 @@ Deck::Deck() {
             };
 
             Card card(v, b);
-            cards.push_back(card);
+            add_card(card);
             i += 1;
         }
     }
 }
-
-Card Deck::drawcard(int i) {
-    Card card = cards[i];
-    cards.erase(cards.begin() + i);
-
-    return card;
-}
-
-//void Deck::shuffle() {
-//    int order[52];
-//    std::fill_n(order, 52, -1);
-//    srand (time(NULL));
-//
-//    //Card shuffled[52]; // temp array of cards
-//    // Now, construct the shuffled order
-//    int i = 0;
-//    while (i < 52) {
-//        int rand_num = rand() % 52;
-//        int *finder = std::find(std::begin(order), std::end(order), rand_num);
-//
-//        if (finder == std::end(order)){
-//            // This number is not in the array yet
-//            order[i] = rand_num;
-//            i+=1;
-//        }
-//    }
-//
-//    // Use the order to re-arrange the cards array
-//    for (int i = 0; i < 52; i++) {
-//        std::cout << order[i] << std::endl;
-//        cards[i] = cards[order[i]];
-//    }
-
-//}
 
 void Deck::shuffle() {
     auto rng = std::default_random_engine{};
     std::shuffle(std::begin(cards), std::end(cards), rng);
 }
 
-void Deck::display() {
-    for (int i = 0; i < cards.size(); i++) {
-        cards.at(i).display();
-    }
-}

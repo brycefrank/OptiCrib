@@ -1,15 +1,14 @@
 #ifndef OPTICRIB_DECK_H
 #define OPTICRIB_DECK_H
 #include "card.h"
+#include "cardcollection.h"
 #include <vector>
 
-class Deck {
+
+class Deck : public CardCollection {
 public:
-    std::vector<Card> cards;
     Deck();
-    Card drawcard(int i);
     void shuffle();
-    void display();
 };
 
 #endif //OPTICRIB_DECK_H

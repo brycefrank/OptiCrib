@@ -1,10 +1,12 @@
 #include "round.h"
 #include <iostream>
+#include <vector>
 
 
 Round::Round() {
     starting_sequence();
     preplay();
+    //play();
 }
 
 void Round::starting_sequence() {
@@ -17,10 +19,10 @@ void Round::starting_sequence() {
     std::cout << "Enter a number between 1 and 52: ";
     std::cin >> player_draw;
     player_draw = player_draw - 1;
-    Card player_card = deck.drawcard(player_draw);
+    Card player_card = deck.get_card(player_draw);
 
     int ai_draw = rand() % 50;
-    Card ai_card = deck.drawcard(ai_draw);
+    Card ai_card = deck.get_card(ai_draw);
 
     if (ai_card.getvalue() < player_card.getvalue()) {
         player1.setrole("Pone");
@@ -31,8 +33,8 @@ void Round::starting_sequence() {
     }
 
     // Return cards back to the deck, shuffle
-    deck.cards.push_back(ai_card);
-    deck.cards.push_back(player_card);
+    deck.add_card(ai_card);
+    deck.add_card(player_card);
     deck.shuffle();
 
 }
@@ -44,27 +46,42 @@ void Round::preplay() {
     deal();
 
     // Display hand to user
-    player1.display_hand();
+    player1.hand.display();
 
     // Ask user to discard into crib
-    Card crib[4];
-    Card* p1_discard = player1.discard_phase();
+    player1.discard_phase(crib);
 
     // Remove two random cards from AI
-    Card* p2_discard = player1.random_discard();
+    player2.random_discard(crib);
+}
 
-    for (int i = 0; i < 4; i+=2) {
-        crib[i] = p1_discard[i];
-        crib[i+1] = p2_discard[i];
+void Round::play_round() {
+    // A play round is an individual "volley" of plays, to ~31 points
+    int current_value = 0;
+    bool end_round = false;
+    Stack stack;
+
+    while (!end_round) {
+        int card_id;
+        player1.hand.display();
+        std::cout << "Play a card: ";
+        std::cin >> card_id;
+        player1.hand.transfer_card(card_id, stack);
+
+
+        // FIXME rough but working for debugging
+        current_value += stack.get_card(0).getvalue();
+        std::cout << current_value << std::endl;
+
+        if (current_value > 31) {
+            end_round = true;
+        }
     }
 }
 
 void Round::play() {
     stage = "play";
-
-
-
-
+    play_round();
 }
 
 void Round::deal() {
@@ -84,10 +101,8 @@ void Round::deal() {
     }
 
     for (int i = 0; i < hand_size; i++) {
-        pone->hand.push_back(deck.cards[0]);
-        deck.cards.erase(deck.cards.begin());
-        dealer->hand.push_back(deck.cards[0]);
-        deck.cards.erase(deck.cards.begin());
+        deck.transfer_card(i, pone->hand);
+        deck.transfer_card(i, dealer->hand);
     }
 
 }

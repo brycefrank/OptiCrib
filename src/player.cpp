@@ -14,19 +14,7 @@ std::string Player::getrole() {
     return role;
 }
 
-//std::vector<Card> Player::gethand() {
-//    return hand;
-//}
-
-
-void Player::display_hand() {
-    for (int i = 0; i < hand.size(); i++) {
-        hand.at(i).display();
-    }
-
-}
-
-Card* Player::discard_phase() {
+void Player::discard_phase(Hand crib) {
     int first_discard;
     int second_discard;
 
@@ -42,25 +30,13 @@ Card* Player::discard_phase() {
     remove[1] = second_discard;
     std::sort(std::begin(remove), std::end(remove), std::greater<int>());
     for (int i = 0; i < 2; i++) {
-        discard[i] = hand.at(remove[i]);
-        hand.erase(hand.begin() + remove[i]);
+        hand.transfer_card(remove[i], crib);
     }
-
-    for (int i = 0; i < hand.size(); i++) {
-        hand.at(i).display();
-    }
-
-    return discard;
 }
 
-Card* Player::random_discard() {
-    // TODO add AI here...for now this just discards the first two
-    static Card discard[2];
-    discard[0] = hand.at(0);
-    discard[1] = hand.at(1);
-    hand.erase(hand.begin());
-    hand.erase(hand.begin() + 1);
-
-    return discard;
-
+void Player::random_discard(Hand crib) {
+    // For now,  just  transfer the top two cards to the crib
+    hand.transfer_card(0, crib);
+    hand.transfer_card(0, crib);
 }
+

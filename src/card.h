@@ -10,6 +10,7 @@ public:
     Card();
     Card(int v, std::string s);
     int getvalue();
+    int getcribvalue();
     std::string getsuit();
     void display();
 };
