@@ -6,7 +6,7 @@
 Round::Round() {
     starting_sequence();
     preplay();
-    //play();
+    play();
 }
 
 void Round::starting_sequence() {
@@ -19,10 +19,10 @@ void Round::starting_sequence() {
     std::cout << "Enter a number between 1 and 52: ";
     std::cin >> player_draw;
     player_draw = player_draw - 1;
-    Card player_card = deck.get_card(player_draw);
+    Card player_card = deck.cards[player_draw];
 
     int ai_draw = rand() % 50;
-    Card ai_card = deck.get_card(ai_draw);
+    Card ai_card = deck.cards[ai_draw];
 
     if (ai_card.getvalue() < player_card.getvalue()) {
         player1.setrole("Pone");
@@ -51,7 +51,7 @@ void Round::preplay() {
     // Ask user to discard into crib
     player1.discard_phase(crib);
 
-    // Remove two random cards from AI
+    // Remove two random cards from AI hand
     player2.random_discard(crib);
 }
 
@@ -66,14 +66,17 @@ void Round::play_round() {
         player1.hand.display();
         std::cout << "Play a card: ";
         std::cin >> card_id;
-        player1.hand.transfer_card(card_id, stack);
 
+        player1.hand.transfer_card(card_id, stack);
+        stack.check_score(player1);
+
+        player2.hand.transfer_card(0, stack);
+        stack.check_score(player2);
 
         // FIXME rough but working for debugging
-        current_value += stack.get_card(0).getvalue();
-        std::cout << current_value << std::endl;
+        std::cout << stack.value() << std::endl;
 
-        if (current_value > 31) {
+        if (stack.value() > 31) {
             end_round = true;
         }
     }
@@ -81,6 +84,7 @@ void Round::play_round() {
 
 void Round::play() {
     stage = "play";
+
     play_round();
 }
 
