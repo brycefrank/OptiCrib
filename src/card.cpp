@@ -9,11 +9,11 @@ Card::Card(int v, std::string s) {
     suit = s;
 }
 
-int Card::getvalue() {
+int Card::get_value() {
     return value;
 }
 
-int Card::getcribvalue() {
+int Card::get_crib_value() {
     // In cribbage, face cards are worth 10
     if (value >= 10) {
         return 10;
@@ -23,12 +23,12 @@ int Card::getcribvalue() {
 
 }
 
-std::string Card::getsuit() {
+std::string Card::get_suit() {
     return suit;
 }
 
 
 void Card::display() {
-    std::string value_str = std::to_string(getvalue());
-    std::cout << getsuit() << "--" << value_str << std::endl;
+    std::string value_str = std::to_string(get_value());
+    std::cout << get_suit() << "--" << value_str << std::endl;
 }

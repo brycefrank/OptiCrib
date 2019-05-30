@@ -9,9 +9,9 @@ private:
 public:
     Card();
     Card(int v, std::string s);
-    int getvalue();
-    int getcribvalue();
-    std::string getsuit();
+    int get_value();
+    int get_crib_value();
+    std::string get_suit();
     void display();
 };
 

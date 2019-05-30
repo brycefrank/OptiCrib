@@ -24,7 +24,7 @@ void Round::starting_sequence() {
     int ai_draw = rand() % 50;
     Card ai_card = deck.cards[ai_draw];
 
-    if (ai_card.getvalue() < player_card.getvalue()) {
+    if (ai_card.get_value() < player_card.get_value()) {
         player1.setrole("Pone");
         player2.setrole("Dealer");
     } else {
@@ -74,9 +74,10 @@ void Round::play_round() {
         stack.check_score(player2);
 
         // FIXME rough but working for debugging
-        std::cout << stack.value() << std::endl;
+        int stack_value = stack.get_current_value();
+        std::cout << stack_value << std::endl;
 
-        if (stack.value() > 31) {
+        if (stack_value > 31) {
             end_round = true;
         }
     }
