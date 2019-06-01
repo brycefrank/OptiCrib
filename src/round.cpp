@@ -1,13 +1,29 @@
 #include "round.h"
 #include <iostream>
 #include <vector>
+#include <string>
+#include <ncurses.h>
 
 
 Round::Round() {
+    display_interface();
     starting_sequence();
-    preplay();
-    play();
+    //preplay();
+    //play();
 }
+
+void Round::display_interface() {
+    initscr();
+    noecho();
+    curs_set(0);
+
+    deck.display_term();
+    player1.display_hand_window();
+    player2.display_hand_window();
+
+    message_box.display();
+}
+
 
 void Round::starting_sequence() {
     stage = "start";
@@ -15,19 +31,26 @@ void Round::starting_sequence() {
 
     // by default player1 is the user, player2 is the computer
     // ask player1 to draw a card
-    int player_draw;
-    std::cout << "Enter a number between 1 and 52: ";
-    std::cin >> player_draw;
-    player_draw = player_draw - 1;
-    Card player_card = deck.cards[player_draw];
+    char str[2];
+    message_box.new_message("Enter a number between 1 and 52: ");
+    curs_set(1);
+    wmove(message_box.message_box, 0, 0);
+    echo();
+    getstr(str);
+    curs_set(0);
+    noecho();
+    int draw_int = std::stoi(str);
+    Card player_card = deck.cards[draw_int];
 
     int ai_draw = rand() % 50;
     Card ai_card = deck.cards[ai_draw];
 
     if (ai_card.get_value() < player_card.get_value()) {
+        message_box.new_message("You are pone!");
         player1.setrole("Pone");
         player2.setrole("Dealer");
     } else {
+        message_box.new_message("You are dealer!");
         player1.setrole("Dealer");
         player2.setrole("Pone");
     }
@@ -46,7 +69,7 @@ void Round::preplay() {
     deal();
 
     // Display hand to user
-    player1.hand.display();
+    //player1.hand.display();
 
     // Ask user to discard into crib
     player1.discard_phase(crib);
@@ -85,7 +108,6 @@ void Round::play_round() {
 
 void Round::play() {
     stage = "play";
-
     play_round();
 }
 
@@ -115,3 +137,4 @@ void Round::deal() {
 std::string Round::getstage() {
     return stage;
 }
+

@@ -7,9 +7,12 @@
 class Player {
 private:
     std::string role;
+    int player_num;
 public:
-    Player();
+    Player(int num);
     Hand hand;
+
+    //int get_num();
 
     void setrole(std::string r);
     std::string getrole();
@@ -17,6 +20,7 @@ public:
 
     void discard_phase(Hand crib);
     void random_discard(Hand crib);
+    void display_hand_window();
 };
 
 #endif //OPTICRIB_PLAYER_H

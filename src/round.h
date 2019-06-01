@@ -4,16 +4,21 @@
 #include "deck.h"
 #include "stack.h"
 #include "hand.h"
+#include "messagebox.h"
 #include <string>
+#include <ncurses.h>
 
 class Round {
 private:
-    Player player1;
-    Player player2;
+    Player player1 = Player(1);
+    Player player2 = Player(2);
     std::string stage; // The current "stage" of the round
     Deck deck;
     Stack stack;
     Hand crib; // The crib is really just another hand...
+    MessageBox message_box;
+
+    void display_interface();
 
     void starting_sequence();
     void deal();

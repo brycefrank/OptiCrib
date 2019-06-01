@@ -1,6 +1,7 @@
 #include "card.h"
 #include <string>
 #include <iostream>
+#include <ncurses.h>
 
 Card::Card(){}
 
@@ -31,4 +32,7 @@ std::string Card::get_suit() {
 void Card::display() {
     std::string value_str = std::to_string(get_value());
     std::cout << get_suit() << "--" << value_str << std::endl;
+}
+
+void Card::term_display() {
 }

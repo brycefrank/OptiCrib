@@ -1,16 +1,13 @@
-#include <iostream>
-#include <algorithm>
-#include <array>
-#include <time.h>
-#include "card.h"
-#include "deck.h"
-#include "player.h"
-#include "round.h"
-using namespace std;
+#include <ncurses.h>
+#include <locale.h>
+#include <stdlib.h>
+#include "controller.h"
 
 int main() {
-    Round round;
+    Controller c;
+    c.start();
 
+    int g = getch();
+    endwin();
 	return 0;
 }
-

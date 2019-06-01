@@ -13,6 +13,7 @@ public:
     int get_crib_value();
     std::string get_suit();
     void display();
+    void term_display(); // holder while this function is developed...
 };
 
 #endif //OPTICRIB_CARD_H

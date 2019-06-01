@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <ncurses.h>
 
 Deck::Deck() {
     int i = 0;
@@ -35,6 +36,19 @@ Deck::Deck() {
             i += 1;
         }
     }
+}
+
+void Deck::display_term() {
+    int height, width, start_y, start_x;
+    height = 8;
+    width = 10;
+    start_y = 5;
+    start_x = 2;
+    WINDOW * deck_win = newwin(height, width, start_y, start_x);
+    box(deck_win, 0, 0);
+    wprintw(deck_win, "Deck");
+    refresh();
+    wrefresh(deck_win);
 }
 
 void Deck::shuffle() {

@@ -3,8 +3,12 @@
 #include <iostream>
 #include <algorithm>
 #include <iterator>
+#include <ncurses.h>
 
-Player::Player() {}
+Player::Player(int num) {
+    player_num = num;
+}
+
 
 void Player::setrole(std::string r) {
     role = r;
@@ -40,3 +44,20 @@ void Player::random_discard(Hand crib) {
     hand.transfer_card(0, crib);
 }
 
+void Player::display_hand_window() {
+    if (player_num == 1) {
+        WINDOW * p_h = newwin(8, 20, 14, 12);
+        box(p_h, 0, 0);
+        wprintw(p_h, "Player Hand");
+        refresh();
+        wrefresh(p_h);
+    }
+
+    else {
+        WINDOW * o_h = newwin(8, 20, 1, 12);
+        box(o_h, 0, 0);
+        wprintw(o_h, "Opponent Hand");
+        wrefresh(o_h);
+    }
+
+}

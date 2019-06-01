@@ -9,6 +9,7 @@ class Deck : public CardCollection {
 public:
     Deck();
     void shuffle();
+    void display_term();
 };
 
 #endif //OPTICRIB_DECK_H
