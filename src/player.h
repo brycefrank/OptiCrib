@@ -3,11 +3,14 @@
 #include "card.h"
 #include "hand.h"
 #include <vector>
+#include <ncurses.h>
 
 class Player {
 private:
     std::string role;
     int player_num;
+    WINDOW * win;
+
 public:
     Player(int num);
     Hand hand;
@@ -18,9 +21,10 @@ public:
     std::string getrole();
 
 
-    void discard_phase(Hand crib);
+    void discard_phase();
     void random_discard(Hand crib);
     void display_hand_window();
+    void display_hand(bool hide=true);
 };
 
 #endif //OPTICRIB_PLAYER_H

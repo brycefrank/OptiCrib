@@ -4,6 +4,7 @@
 #include "controller.h"
 
 int main() {
+    setlocale(LC_ALL, "");
     Controller c;
     c.start();
 

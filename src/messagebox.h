@@ -12,11 +12,13 @@ private:
     int width;
     int pos_y;
     int pos_x;
+    bool validate_draw();
 public:
     MessageBox();
     WINDOW* message_box;
     void display();
     void new_message(const char * message);
+    int get_deck_draw();
 };
 
 #endif //OPTICRIB_MESSAGEBOX_H

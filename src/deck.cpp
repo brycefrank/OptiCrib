@@ -12,7 +12,7 @@ Deck::Deck() {
     int i = 0;
     for (int v = 1; v <= 13; v++) {
         for (int s = 1; s <= 4; s++) {
-            std::string b;
+            const char * b;
             switch (s) {
                 case 1:
                     b = "Hearts";
@@ -52,7 +52,7 @@ void Deck::display_term() {
 }
 
 void Deck::shuffle() {
-    auto rng = std::default_random_engine{};
-    std::shuffle(std::begin(cards), std::end(cards), rng);
+    srand(time(0));
+    std::random_shuffle(std::begin(cards), std::end(cards));
 }
 

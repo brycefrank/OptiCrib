@@ -10,7 +10,7 @@ public:
     void add_card(Card card);
     void transfer_card(int ix, CardCollection& target_col);
     void sort();
-    void display();
+    //void display();
 };
 
 #endif //OPTICRIB_CARDCOLLECTION_H

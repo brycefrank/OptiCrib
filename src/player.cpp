@@ -18,24 +18,44 @@ std::string Player::getrole() {
     return role;
 }
 
-void Player::discard_phase(Hand crib) {
-    int first_discard;
-    int second_discard;
+void Player::discard_phase() {
+    // Highlight first menu item
 
-    //TODO inputs should be checked to be in the range of hand indices
-    std::cout << "First discard: ";
-    std::cin >> first_discard;
-    std::cout << "Second discard: ";
-    std::cin >> second_discard;
-
-    int remove[2];
-    static Card discard[2];
-    remove[0] = first_discard;
-    remove[1] = second_discard;
-    std::sort(std::begin(remove), std::end(remove), std::greater<int>());
-    for (int i = 0; i < 2; i++) {
-        hand.transfer_card(remove[i], crib);
+    for (int i = 0; i < hand.cards.size(); i++) {
+        if (i == 0) {
+            wattron(win, A_STANDOUT);
+        } else {
+            wattroff(win, A_STANDOUT);
+        }
+        mvwprintw(win,  i + 1, 1, hand.cards[i].get_char());
     }
+
+    wrefresh(win);
+
+    int ch, i = 0;
+    keypad(win , TRUE ); // enable keyboard input for the window.
+
+    // get the input
+    while(( ch = wgetch(win)) != 'q'){
+
+        mvwprintw( win, i+1, 1, hand.cards[i].get_char());
+        // use a variable to increment or decrement the value based on the input.
+        switch( ch ) {
+            case KEY_UP:
+                i--;
+                i = ( i<0 ) ? hand.cards.size() - 1: i;
+                break;
+            case KEY_DOWN:
+                i++;
+                i = ( i>hand.cards.size() - 1 ) ? 0 : i;
+                break;
+        }
+        // now highlight the next item in the list.
+        wattron( win, A_STANDOUT );
+        mvwprintw( win, i+1, 1, hand.cards[i].get_char());
+        wattroff( win, A_STANDOUT );
+    }
+
 }
 
 void Player::random_discard(Hand crib) {
@@ -46,18 +66,42 @@ void Player::random_discard(Hand crib) {
 
 void Player::display_hand_window() {
     if (player_num == 1) {
-        WINDOW * p_h = newwin(8, 20, 14, 12);
-        box(p_h, 0, 0);
-        wprintw(p_h, "Player Hand");
+        win = newwin(8, 20, 14, 12);
+        box(win, 0, 0);
+        wprintw(win, "Player Hand");
         refresh();
-        wrefresh(p_h);
+        wrefresh(win);
     }
 
     else {
-        WINDOW * o_h = newwin(8, 20, 1, 12);
-        box(o_h, 0, 0);
-        wprintw(o_h, "Opponent Hand");
-        wrefresh(o_h);
+        win = newwin(8, 20, 1, 12);
+        box(win, 0, 0);
+        wprintw(win, "Opponent Hand");
+        wrefresh(win);
     }
+}
 
+void Player::display_hand(bool hide) {
+    if (player_num == 1) {
+        wclear(win);
+        box(win, 0, 0);
+        wprintw(win, "Player Hand");
+        for (int i = 0; i < hand.cards.size(); i++){
+            mvwprintw(win,  i + 1, 1, hand.cards[i].get_char());
+        }
+    }
+    else {
+        wclear(win);
+        box(win, 0, 0);
+        wprintw(win, "Opponent Hand");
+        for (int i = 0; i < hand.cards.size(); i++){
+
+            if (hide) {
+                mvwprintw(win,  i + 1, 1, "--");
+            } else {
+                mvwprintw(win,  i + 1, 1, hand.cards[i].get_char());
+            }
+        }
+    }
+    wrefresh(win);
 }

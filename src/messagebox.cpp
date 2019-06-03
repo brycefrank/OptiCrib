@@ -1,5 +1,6 @@
 #include "messagebox.h"
 #include <iostream>
+#include <cstring>
 
 MessageBox::MessageBox() {
     height = 8;
@@ -29,4 +30,22 @@ void MessageBox::cycle_messages() {
 void MessageBox::new_message(const char * message) {
     messages.push_back(message);
     cycle_messages();
+}
+
+// TODO this
+bool MessageBox::validate_draw() {
+    // Checks if draw can be converted to an integer between 1 and 52
+}
+
+int MessageBox::get_deck_draw() {
+    new_message("Enter a number between 1 and 52: ");
+    char str[2];
+    move(pos_y + 1, pos_x + strlen(messages.at(0)) + 1);
+    echo();
+    curs_set(1);
+    getstr(str);
+    curs_set(0);
+    noecho();
+    int draw_int = std::stoi(str);
+    return draw_int;
 }

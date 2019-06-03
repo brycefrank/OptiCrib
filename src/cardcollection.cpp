@@ -15,11 +15,10 @@ void CardCollection::transfer_card(int ix, CardCollection& target_col) {
 }
 
 void CardCollection::sort(){
-
 }
 
-void CardCollection::display() {
-    for (int i = 0; i < cards.size(); i++) {
-        cards.at(i).display();
-    }
-}
+//void CardCollection::display() {
+//    for (int i = 0; i < cards.size(); i++) {
+//        cards.at(i).display();
+//    }
+//}

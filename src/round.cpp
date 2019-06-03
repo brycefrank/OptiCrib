@@ -8,7 +8,7 @@
 Round::Round() {
     display_interface();
     starting_sequence();
-    //preplay();
+    preplay();
     //play();
 }
 
@@ -31,21 +31,16 @@ void Round::starting_sequence() {
 
     // by default player1 is the user, player2 is the computer
     // ask player1 to draw a card
-    char str[2];
-    message_box.new_message("Enter a number between 1 and 52: ");
-    curs_set(1);
-    wmove(message_box.message_box, 0, 0);
-    echo();
-    getstr(str);
-    curs_set(0);
-    noecho();
-    int draw_int = std::stoi(str);
-    Card player_card = deck.cards[draw_int];
+    int draw_int = message_box.get_deck_draw();
+    deck.transfer_card(draw_int, player1.hand);
+    player1.display_hand();
 
     int ai_draw = rand() % 50;
-    Card ai_card = deck.cards[ai_draw];
+    deck.transfer_card(ai_draw, player2.hand);
+    player2.display_hand();
 
-    if (ai_card.get_value() < player_card.get_value()) {
+    // TODO handle a draw
+    if (player2.hand.cards.at(0).get_value() < player1.hand.cards.at(0).get_value()) {
         message_box.new_message("You are pone!");
         player1.setrole("Pone");
         player2.setrole("Dealer");
@@ -55,11 +50,13 @@ void Round::starting_sequence() {
         player2.setrole("Pone");
     }
 
-    // Return cards back to the deck, shuffle
-    deck.add_card(ai_card);
-    deck.add_card(player_card);
-    deck.shuffle();
+    getch();
 
+
+    // Return cards back to the deck, shuffle
+    player1.hand.transfer_card(0, deck);
+    player2.hand.transfer_card(0, deck);
+    deck.shuffle();
 }
 
 void Round::preplay() {
@@ -69,13 +66,14 @@ void Round::preplay() {
     deal();
 
     // Display hand to user
-    //player1.hand.display();
+    player1.display_hand();
+    player2.display_hand();
 
     // Ask user to discard into crib
-    player1.discard_phase(crib);
+    player1.discard_phase();
 
     // Remove two random cards from AI hand
-    player2.random_discard(crib);
+    //player2.random_discard(crib);
 }
 
 void Round::play_round() {
@@ -86,7 +84,7 @@ void Round::play_round() {
 
     while (!end_round) {
         int card_id;
-        player1.hand.display();
+        //player1.hand.display();
         std::cout << "Play a card: ";
         std::cin >> card_id;
 
