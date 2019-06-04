@@ -11,13 +11,27 @@ Card::Card(int v, const char * s) {
     value = v;
     suit = s;
 
-
     switch(value) {
         case  1: value_char = "A";
         case 11: value_char = "J";
         case 12: value_char = "Q";
         case 13: value_char = "K";
         default: value_char = value_to_char();
+    }
+
+    if (value == 1) {
+        value_char = "A";
+    }
+    if (value == 11) {
+        value_char = "J";
+    }
+    if (value == 12) {
+        value_char = "Q";
+    }
+    if (value == 13) {
+        value_char = "K";
+    } else {
+        value_char = value_to_char();
     }
 
 
@@ -43,15 +57,14 @@ const char* Card::value_to_char() {
     return tab2;
 };
 
-// TODO refactor these...
-// TODO this should involve value_char, not value
 char * Card::get_char() {
     // Gets the char array for a pretty print version of the card
-    std::string str_val = std::to_string(value);
-    std::string temp = str_val + "--" + psuit;
-    char * tab2 = new char [temp.length()+1];
-    strcpy(tab2, temp.c_str());
-    return tab2;
+    std::string value_str = value_char;
+    std::string psuit_str = psuit;
+    std::string temp = value_str + "--" + psuit_str;
+    char * out = new char [temp.length()+1];
+    strcpy(out, temp.c_str());
+    return out;
 }
 
 int Card::get_value() {

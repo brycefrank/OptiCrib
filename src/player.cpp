@@ -33,10 +33,12 @@ void Player::discard_phase() {
     wrefresh(win);
 
     int ch, i = 0;
+    int j = 0;
+    int selected[2];
     keypad(win , TRUE ); // enable keyboard input for the window.
 
-    // get the input
-    while(( ch = wgetch(win)) != 'q'){
+    // Get ch, if it is not q, execute this block
+    while(   (( ch = wgetch(win)) != 'q')){
 
         mvwprintw( win, i+1, 1, hand.cards[i].get_char());
         // use a variable to increment or decrement the value based on the input.
@@ -49,12 +51,17 @@ void Player::discard_phase() {
                 i++;
                 i = ( i>hand.cards.size() - 1 ) ? 0 : i;
                 break;
+            case KEY_RIGHT:
+                selected[0] = i;
+
         }
         // now highlight the next item in the list.
         wattron( win, A_STANDOUT );
         mvwprintw( win, i+1, 1, hand.cards[i].get_char());
         wattroff( win, A_STANDOUT );
     }
+    wclear(win);
+    wrefresh(win);
 
 }
 
@@ -95,7 +102,6 @@ void Player::display_hand(bool hide) {
         box(win, 0, 0);
         wprintw(win, "Opponent Hand");
         for (int i = 0; i < hand.cards.size(); i++){
-
             if (hide) {
                 mvwprintw(win,  i + 1, 1, "--");
             } else {

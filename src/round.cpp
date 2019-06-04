@@ -52,7 +52,6 @@ void Round::starting_sequence() {
 
     getch();
 
-
     // Return cards back to the deck, shuffle
     player1.hand.transfer_card(0, deck);
     player2.hand.transfer_card(0, deck);
@@ -67,7 +66,7 @@ void Round::preplay() {
 
     // Display hand to user
     player1.display_hand();
-    player2.display_hand();
+    player2.display_hand(true);
 
     // Ask user to discard into crib
     player1.discard_phase();
