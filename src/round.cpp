@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include <ncurses.h>
+#include <algorithm>
+#include <array>
 
 
 Round::Round() {
@@ -69,7 +71,13 @@ void Round::preplay() {
     player2.display_hand(true);
 
     // Ask user to discard into crib
-    player1.discard_phase();
+    std::array<int, 2> selected = player1.discard_phase();
+
+    std::sort(selected.begin(), selected.end());
+    for (int i = selected.size(); i > 0 ; i--) {
+        message_box.new_message(player1.hand.cards.at(i).get_char());
+        player1.hand.transfer_card(i, crib);
+    }
 
     // Remove two random cards from AI hand
     //player2.random_discard(crib);

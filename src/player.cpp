@@ -18,7 +18,8 @@ std::string Player::getrole() {
     return role;
 }
 
-void Player::discard_phase() {
+// TODO make menu its own class...
+std::array<int, 2> Player::discard_phase() {
     // Highlight first menu item
 
     for (int i = 0; i < hand.cards.size(); i++) {
@@ -34,7 +35,7 @@ void Player::discard_phase() {
 
     int ch, i = 0;
     int j = 0;
-    int selected[2];
+    std::array<int, 2> selected = {-1, -1};
     keypad(win , TRUE ); // enable keyboard input for the window.
 
     // Get ch, if it is not q, execute this block
@@ -52,16 +53,19 @@ void Player::discard_phase() {
                 i = ( i>hand.cards.size() - 1 ) ? 0 : i;
                 break;
             case KEY_RIGHT:
+                selected[1] = selected[0]; // push the last element back
                 selected[0] = i;
-
         }
         // now highlight the next item in the list.
         wattron( win, A_STANDOUT );
         mvwprintw( win, i+1, 1, hand.cards[i].get_char());
         wattroff( win, A_STANDOUT );
     }
+
     wclear(win);
     wrefresh(win);
+
+    return selected;
 
 }
 
