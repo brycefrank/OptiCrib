@@ -8,6 +8,8 @@ Controller::Controller() {
 
 
 void Controller::start() {
+    initscr();
+    noecho();
+    curs_set(0);
     Round r;
-
 }

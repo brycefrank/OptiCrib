@@ -18,8 +18,6 @@ private:
     Hand crib; // The crib is really just another hand...
     MessageBox message_box;
 
-    void display_interface();
-
     void starting_sequence();
     void deal();
     void preplay(); // The stage where users discard to crib

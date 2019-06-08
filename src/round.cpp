@@ -8,24 +8,12 @@
 
 
 Round::Round() {
-    display_interface();
+    deck.display_term();
+    message_box.display();
     starting_sequence();
     preplay();
     //play();
 }
-
-void Round::display_interface() {
-    initscr();
-    noecho();
-    curs_set(0);
-
-    deck.display_term();
-    player1.display_hand_window();
-    player2.display_hand_window();
-
-    message_box.display();
-}
-
 
 void Round::starting_sequence() {
     stage = "start";

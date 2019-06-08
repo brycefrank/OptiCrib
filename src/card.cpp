@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <sstream>
 #include <cstring>
+#include <iostream>
 
 Card::Card(){}
 
@@ -11,24 +12,16 @@ Card::Card(int v, const char * s) {
     value = v;
     suit = s;
 
-    switch(value) {
-        case  1: value_char = "A";
-        case 11: value_char = "J";
-        case 12: value_char = "Q";
-        case 13: value_char = "K";
-        default: value_char = value_to_char();
-    }
-
     if (value == 1) {
         value_char = "A";
     }
-    if (value == 11) {
+    else if (value == 11) {
         value_char = "J";
     }
-    if (value == 12) {
+    else if (value == 12) {
         value_char = "Q";
     }
-    if (value == 13) {
+    else if (value == 13) {
         value_char = "K";
     } else {
         value_char = value_to_char();
