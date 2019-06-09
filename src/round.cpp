@@ -6,13 +6,12 @@
 #include <algorithm>
 #include <array>
 
-
 Round::Round() {
     deck.display_term();
     message_box.display();
     starting_sequence();
     preplay();
-    //play();
+    play();
 }
 
 void Round::starting_sequence() {
@@ -60,20 +59,21 @@ void Round::preplay() {
 
     // Ask user to discard into crib
     std::array<int, 2> selected = player1.discard_phase();
-
     std::sort(selected.begin(), selected.end());
-    for (int i = selected.size(); i > 0 ; i--) {
-        message_box.new_message(player1.hand.cards.at(i).get_char());
-        player1.hand.transfer_card(i, crib);
+
+    for (size_t i = selected.size(); i--;) {
+        message_box.new_message(player1.hand.cards[selected[i]].get_char());
+        player1.hand.transfer_card(selected[i], crib);
     }
 
-    // Remove two random cards from AI hand
-    //player2.random_discard(crib);
+    player2.random_discard(crib);
+
+    player1.display_hand();
+    player2.display_hand(true);
 }
 
 void Round::play_round() {
     // A play round is an individual "volley" of plays, to ~31 points
-    int current_value = 0;
     bool end_round = false;
     Stack stack;
 

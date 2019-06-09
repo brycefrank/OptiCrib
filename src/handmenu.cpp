@@ -32,6 +32,16 @@ void HandMenu::display_hand2(Hand& hand, int highlight) {
     }
 }
 
+bool HandMenu::validate_selection(std::array<int, 2> selection) {
+    if (selection[0] == selection[1]) {
+        return false;
+    } else if (selection[0] == -1 || selection[1] == -1){
+        return false;
+    } else {
+        return true;
+    }
+}
+
 // TODO this is doing two things, handling the menu and returning the selection...
 std::array<int, 2> HandMenu::display_discard_menu(Hand& hand) {
     // Highlight first menu item
@@ -41,7 +51,7 @@ std::array<int, 2> HandMenu::display_discard_menu(Hand& hand) {
 
     int ch, i= 0;
     int j = 0;
-    std::array<int, 2> selected = {-1, -1};
+    std::array<int, 2> selected = {0, 1};
     keypad(win , TRUE ); // enable keyboard input for the window.
 
     // Get ch, if it is not q, execute this block
@@ -61,6 +71,7 @@ std::array<int, 2> HandMenu::display_discard_menu(Hand& hand) {
             case KEY_RIGHT:
                 selected[1] = selected[0]; // push the last element back
                 selected[0] = i;
+                break;
             case 119: // the w key
                 i--;
                 i = ( i<0 ) ? hand.cards.size() - 1: i;
@@ -76,8 +87,14 @@ std::array<int, 2> HandMenu::display_discard_menu(Hand& hand) {
         }
         display_hand2(hand, i);
     }
+
     wrefresh(win);
-    return selected;
+    if (validate_selection(selected)) {
+        return selected;
+    } else {
+        display_discard_menu(hand);
+    }
+
 }
 
 void HandMenu::display_hand(Hand& hand, int player_num, bool hide) {
