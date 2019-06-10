@@ -18,8 +18,8 @@ std::string Player::getrole() {
     return role;
 }
 
-std::array<int, 2> Player::discard_phase() {
-    return hand_menu.display_discard_menu(hand);
+std::vector<int> Player::discard_phase(int num_discard) {
+    return hand_menu.get_selection(hand, num_discard);
 }
 
 void Player::display_hand(bool hide) {

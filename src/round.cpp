@@ -58,7 +58,7 @@ void Round::preplay() {
     player2.display_hand(true);
 
     // Ask user to discard into crib
-    std::array<int, 2> selected = player1.discard_phase();
+    std::vector<int> selected = player1.discard_phase(2);
     std::sort(selected.begin(), selected.end());
 
     for (size_t i = selected.size(); i--;) {
@@ -78,11 +78,7 @@ void Round::play_round() {
     Stack stack;
 
     while (!end_round) {
-        int card_id;
-        //player1.hand.display();
-        std::cout << "Play a card: ";
-        std::cin >> card_id;
-
+        int card_id = player1.discard_phase(1)[0];
         player1.hand.transfer_card(card_id, stack);
         stack.check_score(player1);
 

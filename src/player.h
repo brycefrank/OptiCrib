@@ -19,7 +19,7 @@ public:
     std::string getrole();
 
 
-    std::array<int, 2> discard_phase();
+    std::vector<int> discard_phase(int num_discard);
     void random_discard(Hand crib);
     void display_hand(bool hide=true);
 };
