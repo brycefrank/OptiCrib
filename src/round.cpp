@@ -79,17 +79,17 @@ void Round::play_round() {
 
     while (!end_round) {
         int card_id = player1.discard_phase(1)[0];
+        stack.display(player1.hand.cards[card_id]);
         player1.hand.transfer_card(card_id, stack);
         stack.check_score(player1);
 
-        player2.hand.transfer_card(0, stack);
+        int opp_id = 0;
+        stack.display(player2.hand.cards[opp_id]);
+        player2.hand.transfer_card(opp_id, stack);
         stack.check_score(player2);
 
-        // FIXME rough but working for debugging
-        int stack_value = stack.get_current_value();
-        std::cout << stack_value << std::endl;
-
-        if (stack_value > 31) {
+        if (stack.get_current_value() > 31) {
+            message_box.new_message("break");
             end_round = true;
         }
     }

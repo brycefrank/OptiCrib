@@ -1,6 +1,7 @@
 #include "stack.h"
 #include <algorithm>
 #include <iostream>
+#include <ncurses.h>
 
 Stack::Stack() {}
 
@@ -61,4 +62,10 @@ int Stack::check_score(Player &player) {
     add_score += check_run();
 
     return add_score;
+}
+
+void Stack::display(Card card) {
+    // Displays card on the stack
+    printw(card.get_char());
+    refresh();
 }

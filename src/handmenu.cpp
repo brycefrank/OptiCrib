@@ -1,5 +1,6 @@
 #include "handmenu.h"
 #include <iostream>
+#include <algorithm>
 
 HandMenu::HandMenu(int player_num) {
     // Display window
@@ -42,9 +43,13 @@ void HandMenu::display_hand(Hand& hand, int highlight, bool hide) {
 }
 
 bool HandMenu::validate_selection(std::vector<int> selection) {
-    if (selection[0] == selection[1]) {
+    std::sort(selection.begin(), selection.begin());
+
+    // TODO check if any element is -1
+    if (std::any_of(selection.begin(), selection.end(), [](int i){return  i == -1;})) {
         return false;
-    } else if ( (selection[0] == -1) || (selection[1] == -1) ){
+    // TODO check if all elements are different
+    } else if ( selection.size() !=  std::unique(selection.begin(), selection.end()) - selection.begin() ) {
         return false;
     } else {
         return true;
@@ -57,7 +62,6 @@ std::vector<int> HandMenu::get_selection(Hand& hand, int length) {
     // Highlight first menu item
     display_hand(hand, 0);
 
-    wrefresh(win);
 
     int ch, i= 0;
     int j = 0;
@@ -81,8 +85,10 @@ std::vector<int> HandMenu::get_selection(Hand& hand, int length) {
                 break;
             case KEY_RIGHT:
                 // Push back all elements
-                for (int j = 0; j < length - 1; j++) {
-                    selected[length - j - 1] = selected[length - j - 2];
+                if (length > 1) {
+                    for (int j = 0; j < length - 1; j++) {
+                        selected[length - j - 1] = selected[length - j - 2];
+                    }
                 }
                 selected[0] = i;
 
@@ -103,7 +109,6 @@ std::vector<int> HandMenu::get_selection(Hand& hand, int length) {
         display_hand(hand, i);
     }
 
-    wrefresh(win);
     if (validate_selection(selected)) {
         return selected;
     } else {

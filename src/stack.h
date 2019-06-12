@@ -13,6 +13,7 @@ public:
     Stack();
     int get_current_value();
     int check_score(Player& player);
+    void display(Card card);
 };
 
 #endif //OPTICRIB_STACK_H
