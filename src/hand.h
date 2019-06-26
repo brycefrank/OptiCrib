@@ -5,7 +5,7 @@
 class Hand : public CardCollection {
 public:
     Hand();
-    int count_hand(); // TODO: placeholder for score counting method
+    int count_hand(Card stack_card); // TODO: placeholder for score counting method
     void change_order(int old_ix, int new_ix);
 };
 
